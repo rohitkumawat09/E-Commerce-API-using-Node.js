@@ -41,6 +41,8 @@ import connectDB from "./config/db.js";
 import userRouter from "./routes/userRoutes.js";
 import product from "./routes/productRoutes.js";
 import cartRouter from "./routes/cartRoutes.js";
+import swaggerSpec from "./swagger.js";
+import swaggerUi from "swagger-ui-express"
 
 dotenv.config();
 const app = express();
@@ -55,7 +57,7 @@ app.use(cors({
 }));
 // app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-
+app.use('/api-docs', swaggerUi.serve,swaggerUi.setup(swaggerSpec))
 app.use("/user", userRouter);
 app.use("/cart", cartRouter);
 app.use("/product", product);

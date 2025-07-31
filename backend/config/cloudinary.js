@@ -9,17 +9,5 @@ cloudinary.config({
 });
 
 
-function uploadToCloudinary(buffer, folder) {
-  return new Promise((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-      { folder },
-      (err, result) => {
-        if (result) resolve(result);
-        else reject(err);
-      }
-    );
-    stream.end(buffer);
-  });
-}
 
-export default uploadToCloudinary;
+export default cloudinary ;

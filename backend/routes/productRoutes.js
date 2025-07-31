@@ -13,11 +13,11 @@ import multer from "multer";
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// router.post("/add", upload.single("image"), createForm);
+router.post("/add", upload.single("image"), createForm);
 
 router.get("/productsdetails", getAllProducts);
 router.get("/productsdetails/:_id", getAllProductsid);
 
-router.post("/add",upload.single("image"), addProduct  );
+router.post("/add", addProduct  );
 
 export default router;
