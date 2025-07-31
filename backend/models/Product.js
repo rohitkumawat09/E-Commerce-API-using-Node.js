@@ -1,0 +1,38 @@
+// import mongoose from "mongoose";
+
+// const productSchema = new mongoose.Schema({
+//   name: String,
+//   description: String,
+//   image: { type: String, default: "" },
+//   price: String,
+//   category: String,
+// });
+
+// const product = mongoose.model("Product", productSchema);
+
+// export default product;
+import mongoose from "mongoose";
+
+const productSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    slug: { type: String, required: true },
+    description: { type: String, required: true },
+    image: { type: String , required: true},
+    category: { type: String ,},
+    quantity: { type: Number, default: 0, },
+    // price: { type: Number }, // Optional direct price
+    originalPrice: { type: Number , },
+    discountedPrice: { type: Number , },
+    attributes: [
+      {
+        key: { type: String },
+        value: { type: String },
+      },
+    ],
+  },
+  { timestamps: true }
+);
+
+const Product = mongoose.model("Product", productSchema);
+export default Product;
