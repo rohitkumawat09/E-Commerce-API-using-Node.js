@@ -21,7 +21,7 @@ const SingleProduct = () => {
   useEffect(() => {
     const fetchSingleProduct = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/product/productsdetails/${id}`);
+        const response = await axios.get(`https://e-commerce-api-using-node-js-1.onrender.com/product/productsdetails/${id}`);
         setProduct(response.data);
       } catch (error) {
         console.error("Error fetching single product:", error);

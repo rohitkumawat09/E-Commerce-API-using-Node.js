@@ -9,7 +9,7 @@ const options = {
       description: 'API documentation for the E-Commerce platform',
     },
     servers: [
-      { url: 'http://localhost:4000' }
+      { url: 'https://e-commerce-api-using-node-js-1.onrender.com' }
     ],
     components: {
       securitySchemes: {

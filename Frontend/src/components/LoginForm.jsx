@@ -9,7 +9,7 @@
 //     e.preventDefault();
 
 //     try {
-//       const res = await axios.post("http://localhost:4000/user/login", {
+//       const res = await axios.post("https://e-commerce-api-using-node-js-1.onrender.com/user/login", {
 //         email,
 //         password,
 //       },
@@ -62,7 +62,7 @@ const LoginForm = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:4000/user/login",
+        "https://e-commerce-api-using-node-js-1.onrender.com/user/login",
         { email, password },
         { withCredentials: true }
       );
