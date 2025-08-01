@@ -108,7 +108,7 @@ const RegisterForm = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:4000/user/register",
+        "https://e-commerce-api-using-node-js.onrender.com/user/register",
         formData,
         { withCredentials: true }
       );

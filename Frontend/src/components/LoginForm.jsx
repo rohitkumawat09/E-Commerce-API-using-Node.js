@@ -14,7 +14,7 @@ const LoginForm = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:4000/user/login",
+        "https://e-commerce-api-using-node-js.onrender.com/user/login",
         { email, password },
         { withCredentials: true }
       );

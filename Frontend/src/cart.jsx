@@ -8,7 +8,7 @@ function Cart() {
   useEffect(() => {
     async function fetchCart() {
       try {
-        const response = await axios.get("http://localhost:4000/cart/getaddToCart");
+        const response = await axios.get("https://e-commerce-api-using-node-js.onrender.com/cart/getaddToCart");
         console.log("response:", response.data);
 
         const formattedCart = response.data.items.map((item) => ({
