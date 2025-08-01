@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import cart from './cart';
 
 
 export const Header = () => {
@@ -9,7 +10,7 @@ export const Header = () => {
       <nav className="nav-links">
         <Link to="/Home">Home</Link>
         <Link to="/wishlist">Wishlist</Link>
-        <Link to="/cart">Cart</Link>
+        <Link to="/cart">Cart{cart.length}</Link>
           
           
        

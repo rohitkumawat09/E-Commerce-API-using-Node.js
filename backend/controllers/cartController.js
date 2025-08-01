@@ -1,19 +1,13 @@
-//  export async function addToCart (req,res){
-//     console.log("laptop   id=1  ")
-// }
-//  export async function getCart(req,res){
-//     console.log("watches id=2")
-// }
-
-
 import Cart from '../models/Cart.js';
 
 export async function addToCart(req, res) {
   const { userId, productId, name, price, quantity, image } = req.body;
+  // console.log(req.body)
 
   try {
-    let cart = await Cart.findOne({ userId });
-
+    let cart = await Cart.findOne({ productId })
+    console.log(cart);
+    
     const item = { productId, name, price, quantity, image };
 
     if (cart) {

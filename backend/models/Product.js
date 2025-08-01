@@ -1,16 +1,3 @@
-// import mongoose from "mongoose";
-
-// const productSchema = new mongoose.Schema({
-//   name: String,
-//   description: String,
-//   image: { type: String, default: "" },
-//   price: String,
-//   category: String,
-// });
-
-// const product = mongoose.model("Product", productSchema);
-
-// export default product;
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema(
@@ -21,7 +8,6 @@ const productSchema = new mongoose.Schema(
     image: { type: String , required: true},
     category: { type: String ,},
     quantity: { type: Number, default: 0, },
-    // price: { type: Number }, // Optional direct price
     originalPrice: { type: Number , },
     discountedPrice: { type: Number , },
     attributes: [

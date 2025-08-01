@@ -1,45 +1,3 @@
-// import User from '../models/User.js'; 
-
-// export const registerUser = async (req, res) => {
-//   try {
-//     const { name, email, password } = req.body;
-
-//     const existingUser = await User.findOne({ email });
-//     if (existingUser) {
-//       return res.status(400).json({ error: 'User already exists' });
-//     }
-
-//     const user = new User({ name, email, password });
-//     await user.save();
-//     res.json({ message: 'User registered successfully' });
-//   } catch (err) {
-//     res.status(500).json({ error: 'Registration failed' });
-//   }
-// };
-
-// export const loginUser = async (req, res) => {
-//   try {
-//     const { email, password } = req.body;
-
-//     const user = await User.findOne({ email, password });
-//     if (!user) {
-//       return res.status(401).json({ error: 'Invalid credentials' });
-//     }
-
-//     res.json({
-//       message: 'Login successful',
-//       user: {
-//         id: user._id,
-//         name: user.name,
-//         email: user.email
-//       }
-//     });
-//   } catch (err) {
-//     res.status(500).json({ error: 'Login failed' });
-//   }
-// };
-
-
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -94,12 +52,19 @@ export const loginUser = async (req, res) => {
 
 
 
-  res.cookie('token', token, {
-     httpOnly: true,
- secure: true,
- sameSite: "none",
- maxAge:3600000
-    });
+//   res.cookie('token', token, {
+//      httpOnly: true,
+//  secure: true,
+//  sameSite: "none",
+//  maxAge:3600000
+//     });
+res.cookie('token', token, {
+  httpOnly: true,
+  secure: false,         // ✅ false on localhost (no https)
+  sameSite: 'lax',       // ✅ lax works well in development
+  maxAge: 3600000
+});
+
 
     res.status(200).json({
       message: 'Login successful',
