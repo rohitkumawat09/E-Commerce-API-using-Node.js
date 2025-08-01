@@ -39,7 +39,7 @@ const navigate=useNavigate()
     
       try {
         const response = await axios.post(
-          "http://localhost:4000/cart/postaddToCart",
+          "https://e-commerce-api-using-node-js.onrender.com/cart/postaddToCart",
           {
             productId: product._id,
             quantity: 1,
