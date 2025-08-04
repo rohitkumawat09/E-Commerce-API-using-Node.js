@@ -1,0 +1,207 @@
+// import React, { useContext } from "react";
+// import { Link, useNavigate } from "react-router-dom";
+// import axios from "axios";
+// import { AuthContext } from "./AuthContext";
+// import { EcomContext } from "./UseContext";
+
+// export const Header = () => {
+//   const { user, setUser } = useContext(AuthContext);
+//   const { cart } = useContext(EcomContext);
+//   const navigate = useNavigate();
+
+//   const handleLogout = async () => {
+//     try {
+//       await axios.post("http://localhost:4000/user/logout", null, {
+//         withCredentials: true,
+//       });
+//       setUser(null);
+//       navigate("/loginform");
+//       alert("Logout successful");
+//     } catch (error) {
+//       console.error("Logout failed:", error);
+//     }
+//   };
+
+//   return (
+//     <header className="header">
+//       <div className="logo">
+//         <Link to="/home">My E-Commerce</Link>
+//       </div>
+
+//       <nav className="nav-links">
+//         <Link to="/home">Home</Link>
+//         <Link to="/wishlist">Wishlist</Link>
+//         <Link to="/cart">Cart ({cart.length})</Link>
+
+//         {user ? (
+//           <>
+//             <span style={{color :"red"}}> <span style={{color:"orange"}}>Welcome </span>{user.name}</span>
+//             <button onClick={handleLogout}>Logout</button>
+//           </>
+//         ) : (
+//           <Link to="/loginform">Login</Link>
+//         )}
+//       </nav>
+//     </header>
+//   );
+// };
+
+
+// import React, { useContext } from "react";
+// import axios from "axios";
+// import { AuthContext } from "./AuthContext";
+// import { EcomContext } from "./UseContext";
+// import { instance } from "../axiosConfig";
+// import "./Header.css"; // Assuming you have a CSS file for styling
+
+// export const Header = () => {
+//   const { user, setUser } = useContext(AuthContext);
+//   const { cart, wishlist } = useContext(EcomContext);
+
+//   const handleLogout = async () => {
+//     try {
+//       await instance.post("/user/logout", null, {
+//         withCredentials: true,
+//       });
+//       setUser(null);
+//       alert("Logout successful");
+//       window.location.href = "/loginform"; // full reload
+//     } catch (error) {
+//       console.error("Logout failed:", error);
+//     }
+//   };
+
+//   const handleReloadNavigate = (path) => {
+//     window.location.href = path; 
+//   };
+
+//   return (
+//     <header className="header">
+//       <div className="logo">
+//         <span onClick={() => handleReloadNavigate("/home")} style={{ cursor: "pointer", color: "white", fontSize: "1.5rem", fontWeight: "bold" }}>
+//           My E-Commerce
+//         </span>
+//       </div>
+
+//       <nav className="nav-links">
+//         <span onClick={() => handleReloadNavigate("/home")} style={{ cursor: "pointer" }}>
+//           Home
+//         </span>
+//         <span onClick={() => handleReloadNavigate("/wishlist")} style={{ cursor: "pointer" }}>
+//           Wishlist ({wishlist.length})
+//         </span>
+//         <span onClick={() => handleReloadNavigate("/cart")} style={{ cursor: "pointer" }}>
+//           Cart ({cart.length})
+//         </span>
+
+//         {user ? (
+//           <>
+//             <span style={{ color: "red" }}>
+//               <span style={{ color: "orange" }}>Welcome </span>
+//               {user.name}
+//             </span>
+//             <button onClick={handleLogout}>Logout</button>
+//           </>
+//         ) : (
+//           <span onClick={() => handleReloadNavigate("/loginform")} style={{ cursor: "pointer" }}>
+//             Login
+//           </span>
+//         )}
+//       </nav>
+//     </header>
+//   );
+// };
+import React, { useContext } from "react";
+import { AuthContext } from "./AuthContext";
+import { EcomContext } from "./UseContext";
+import { instance } from "../axiosConfig";
+import "./Header.css"; // Ensure your Header.css includes all styles
+
+export const Header = () => {
+  const { user, setUser } = useContext(AuthContext);
+  const { cart, wishlist } = useContext(EcomContext);
+
+  const handleLogout = async () => {
+    try {
+      await instance.post("/user/logout", null, {
+        withCredentials: true,
+      });
+      setUser(null);
+      alert("Logout successful");
+      window.location.href = "/loginform";
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+  const handleReloadNavigate = (path) => {
+    window.location.href = path;
+  };
+
+  return (
+    <header className="header">
+      <div className="logo">
+        <span
+          onClick={() => handleReloadNavigate("/home")}
+          style={{
+            cursor: "pointer",
+            color: "white",
+            fontSize: "1.5rem",
+            fontWeight: "bold",
+          }}
+        >
+            🛍️ MyShop
+        </span>
+      </div>
+
+      <nav className="nav-links">
+        <span onClick={() => handleReloadNavigate("/home")} style={{ cursor: "pointer" }}>
+          Home
+        </span>
+
+        {/* Wishlist */}
+        <span
+          className="nav-item-with-indicator"
+          onClick={() => handleReloadNavigate("/wishlist")}
+          style={{ cursor: "pointer" }}
+        >
+          Wishlist ({wishlist.length})
+          {wishlist.length > 0 && (
+            <div className="live-dot wishlist-dot">
+              <div className="dot-pulse"></div>
+            </div>
+          )}
+        </span>
+
+        {/* Cart */}
+        <span
+          className="nav-item-with-indicator"
+          onClick={() => handleReloadNavigate("/cart")}
+          style={{ cursor: "pointer" }}
+        >
+          Cart ({cart.length})
+          {cart.length > 0 && (
+            <div className="live-dot cart-dot">
+              <div className="dot-pulse"></div>
+            </div>
+          )}
+        </span>
+
+        {/* Welcome & Logout/Login */}
+        {user ? (
+          <>
+            <span className="welcome-msg">
+              <span className="hello">Welcome</span>
+              <span className="username">{user.name}</span>
+            </span>
+            <button onClick={handleLogout}>Logout</button>
+          </>
+        ) : (
+          <span onClick={() => handleReloadNavigate("/loginform")} style={{ cursor: "pointer" }}>
+            Login
+          </span>
+        )}
+      </nav>
+    </header>
+  );
+};
