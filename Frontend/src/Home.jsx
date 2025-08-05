@@ -8,6 +8,7 @@ import { instance } from "../axiosConfig";
 
 const Home = () => {
   const [products, setProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,8 +29,32 @@ const Home = () => {
       <div className="product-wrapper">
         <h2 className="product-title">All Products</h2>
 
+
+ <div className="search-bar" style={{ marginBottom: "20px" }}>
+          <input
+            type="text"
+            placeholder="Search products by name, slug, or category..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              padding: "10px",
+              width: "100%",
+              maxWidth: "400px",
+              fontSize: "16px",
+              borderRadius: "5px",
+              border: "1px solid #ccc",
+            }}
+          />
+        </div>
+
         <div className="product-grid">
-          {products.map((product) => (
+          {products
+           .filter((product) =>
+              product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              product.slug.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              product.category.toLowerCase().includes(searchTerm.toLowerCase())
+            )
+          .map((product) => (
             
             
             <div key={product._id} className="product-card">
