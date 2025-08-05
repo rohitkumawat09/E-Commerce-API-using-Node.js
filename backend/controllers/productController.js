@@ -24,16 +24,43 @@ function uploadToCloudinary(buffer, folder) {
     stream.end(buffer);
   });
 }
+// export async function createForm(req, res) {
+//   console.log("first");
+//   console.log(req.body);
+//   console.log(req.file);
+
+//   try {
+//     const imageUrl = req.file ? req.file.path : "";
+   
+
+   
+//     if (req.file) {
+//       const uploaded = await uploadToCloudinary(req.file.buffer, "post_pics");
+//       postPicUrl = uploaded.secure_url;
+//     }
+
+//     const newProduct = new product({
+//       ...req.body,
+//       image: imageUrl?[imageUrl]:[  ],
+//     });
+
+//     const savedProduct = await newProduct.save();
+//     res.status(201).json({
+//       message: "Product created successfully",
+//       product: savedProduct,
+//     });
+//   } catch (err) {
+//     console.error("Product Error:", err);
+//     res
+//       .status(500)
+//       .json({ error: "Product creation failed", details: err.message });
+//   }
+// }
+
 export async function createForm(req, res) {
-  console.log("first");
-  console.log(req.body);
-  console.log(req.file);
-
   try {
-    const imageUrl = req.file ? req.file.path : "";
-   
+    let postPicUrl = "";
 
-   
     if (req.file) {
       const uploaded = await uploadToCloudinary(req.file.buffer, "post_pics");
       postPicUrl = uploaded.secure_url;
@@ -41,21 +68,24 @@ export async function createForm(req, res) {
 
     const newProduct = new product({
       ...req.body,
-      image: imageUrl?[imageUrl]:[  ],
+      image: postPicUrl, 
     });
 
     const savedProduct = await newProduct.save();
+
     res.status(201).json({
       message: "Product created successfully",
       product: savedProduct,
     });
   } catch (err) {
     console.error("Product Error:", err);
-    res
-      .status(500)
-      .json({ error: "Product creation failed", details: err.message });
+    res.status(500).json({
+      error: "Product creation failed",
+      details: err.message,
+    });
   }
 }
+
 
 export const getAllProducts = async (req, res) => {
   console.log(req.body);

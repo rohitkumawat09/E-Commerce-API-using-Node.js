@@ -10,6 +10,8 @@ import Cart from './cart.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import AuthProvider from './AuthContext.jsx';
 import Wishlist from './wishlist.jsx';
+import Admin from "./admin.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -25,6 +27,17 @@ const router = createBrowserRouter([
        
             <Home />
         
+        ),
+      },
+
+
+      
+        {
+        path: 'admin',
+        element: (
+          <ProtectedRoute>
+            < Admin />
+          </ProtectedRoute>
         ),
       },
       {
