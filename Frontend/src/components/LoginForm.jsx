@@ -4,11 +4,12 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../AuthContext"; 
 import { instance } from "../../axiosConfig";
-
+import { EcomContext } from "../UseContext"; 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+ const { fetchCart, fetchWishlist } = useContext(EcomContext);
 
   const { setUser } = useContext(AuthContext); 
 
@@ -27,6 +28,10 @@ const LoginForm = () => {
 
       setUser(res.data.user);
 
+      setUser(res.data.user);
+
+      await fetchCart();
+      await fetchWishlist();
       navigate("/home");
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
@@ -60,3 +65,7 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+
+
+
+

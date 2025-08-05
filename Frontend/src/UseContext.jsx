@@ -1,6 +1,7 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState,useContext  } from "react";
 import axios from "axios";
 import { instance } from "../axiosConfig";
+import { AuthContext } from "./AuthContext";
 
 export const EcomContext = createContext();
 
@@ -8,7 +9,7 @@ function UserContext({ children }) {
   const [cart, setCart] = useState([]);
   const [wishlist, setWishlist] = useState([]);
 
- 
+   const { user } = useContext(AuthContext);
   const fetchCart = async () => {
     try {
       const res = await instance.get("/product/cart/data", {
@@ -55,10 +56,17 @@ function UserContext({ children }) {
     }
   };
 
-  useEffect(() => {
-    fetchCart();
-    fetchWishlist();
-  }, []);
+  // useEffect(() => {
+  //   fetchCart();
+  //   fetchWishlist();
+  // }, []);
+
+    useEffect(() => {
+    if (user) {
+      fetchCart();
+      fetchWishlist();
+    }
+  }, [user]);
 
   const handleAddToCart = async (product) => {
     try {
