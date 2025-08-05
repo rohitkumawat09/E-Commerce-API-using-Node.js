@@ -3,6 +3,7 @@ import axios from "axios";
 import { instance } from "../axiosConfig";
 import { AuthContext } from "./AuthContext";
 
+
 export const EcomContext = createContext();
 
 function UserContext({ children }) {
@@ -69,6 +70,9 @@ function UserContext({ children }) {
   }, [user]);
 
   const handleAddToCart = async (product) => {
+    if(!user){
+
+    }
     try {
       await instance.post(
         `/product/cart/${product._id}`,

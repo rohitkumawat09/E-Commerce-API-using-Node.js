@@ -1,6 +1,6 @@
 
 import { useContext, useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate,useLocation } from "react-router-dom";
 import axios from "axios";
 import { EcomContext } from "./UseContext.jsx";
 import { AuthContext } from "./AuthContext";
@@ -9,6 +9,10 @@ import { instance } from "../axiosConfig";
 const SingleProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+const location = useLocation();
+console.log(location);
+
+
 
   const [product, setProduct] = useState(null);
   const {
@@ -39,25 +43,33 @@ const SingleProduct = () => {
   const isInCart = cart?.some((item) => item._id === product._id);
   const isInWishlist = wishlist?.some((item) => item._id === product._id);
 
-  const handleAdd = async () => {
-    if (!user) {
-      alert("Please login to add product to cart");
-      navigate("/LoginForm");
-      return;
-    }
+ 
+const handleAdd = async () => {
+  if (!user) {
+    navigate(`/LoginForm?referer=${encodeURIComponent(location.pathname)}`);
+    return;
+  }
 
-    if (!isInCart) {
-      handleAddToCart(product);
-      navigate("/cart");
-    }
-  };
+  if (!isInCart) {
+    handleAddToCart(product);
+    alert("Product added to cart");
+    navigate("/cart");
+  }
+};
 
   const handleWishlistAdd = async () => {
-    if (!user) {
-      alert("Please login to add product to wishlist");
-      navigate("/LoginForm");
-      return;
-    }
+    // if (!user) {
+    //   alert("Please login to add product to wishlist");
+    //   navigate("/LoginForm");
+    //   return;
+    // }
+
+
+  if (!user) {
+       alert("Please login to add product to wishlist");
+    navigate(`/LoginForm?referer=${encodeURIComponent(location.pathname)}`);
+    return;
+  }
 
     if (!isInWishlist) {
       await handleAddToWishlist(product);
