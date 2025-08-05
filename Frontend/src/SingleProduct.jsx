@@ -58,13 +58,7 @@ const handleAdd = async () => {
 };
 
   const handleWishlistAdd = async () => {
-    // if (!user) {
-    //   alert("Please login to add product to wishlist");
-    //   navigate("/LoginForm");
-    //   return;
-    // }
-
-
+  
   if (!user) {
        alert("Please login to add product to wishlist");
     navigate(`/LoginForm?referer=${encodeURIComponent(location.pathname)}`);
@@ -74,6 +68,8 @@ const handleAdd = async () => {
     if (!isInWishlist) {
       await handleAddToWishlist(product);
       alert("Product added to wishlist");
+      navigate("/wishlist");
+
     }
   };
 

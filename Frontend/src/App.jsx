@@ -50,7 +50,7 @@ const router = createBrowserRouter([
       },
 
         {
-        path: 'wishList',
+        path: '/wishList',
         element: (
           <ProtectedRoute>
             < Wishlist />
