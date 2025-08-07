@@ -8,7 +8,7 @@ import userRouter from "./routes/userRoutes.js";
 import product from "./routes/productRoutes.js";
 
 import swaggerSpec from "./swagger.js";
-import swaggerUi from "swagger-ui-express"
+import swaggerUi from "swagger-ui-express";
 
 dotenv.config();
 const app = express();
@@ -18,13 +18,19 @@ connectDB();
 
 app.use(express.json());
 
-app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true
-}));
+const corsOptions = {
+  origin: [
+    /^(https:\/\/localhost:\d+|http:\/\/localhost:\d+)$/,
+    process.env.DEPLOYED_FRONTEND_URL,
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true, // Allow cookies to be sent with requests
+};
+app.use(cors(corsOptions));
+
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-app.use('/api-docs', swaggerUi.serve,swaggerUi.setup(swaggerSpec))
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use("/user", userRouter);
 
 app.use("/product", product);
