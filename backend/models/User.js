@@ -3,7 +3,7 @@ import mongoose from "mongoose";
     name:{type:String},
     email:{type:String,unique:true},
     password:{type:String},
-     isAdmin: { type: Boolean, default: false },
+    
 
     cart: [
   {
@@ -16,9 +16,16 @@ import mongoose from "mongoose";
   {
     product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
   }
-]
+],
 
+role: {
+    type: String,  
+    default: 'user',
 
+    
+    
+  
+  }
 
  },{timestamps:true})
 

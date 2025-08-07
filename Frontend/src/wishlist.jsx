@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { instance } from "../axiosConfig";
 
 const Wishlist = () => {
@@ -7,10 +6,21 @@ const Wishlist = () => {
 
   const fetchWishlist = async () => {
     try {
-      const res = await instance.get("/product/wishlist/Data", {
+      const res = await instance.get("/product/wishlist/data", {
         withCredentials: true,
       });
-      setWishlist(res.data.wishlist || []);
+
+      const uniqueWishlist = [];
+      const productIds = new Set();
+
+      res.data.wishlist.forEach((item) => {
+        if (!productIds.has(item.product._id)) {
+          productIds.add(item.product._id);
+          uniqueWishlist.push(item);
+        }
+      });
+
+      setWishlist(uniqueWishlist);
     } catch (error) {
       console.error("Error fetching wishlist:", error);
     }
@@ -21,7 +31,9 @@ const Wishlist = () => {
       await instance.delete(`/product/wishList/remove/${productId}`, {
         withCredentials: true,
       });
-      setWishlist((prev) => prev.filter((item) => item.product._id !== productId));
+      setWishlist((prev) =>
+        prev.filter((item) => item.product._id !== productId)
+      );
     } catch (error) {
       console.error("Error removing from wishlist:", error);
     }
@@ -36,10 +48,13 @@ const Wishlist = () => {
   return (
     <div className="wishlist">
       <h2>My Wishlist</h2>
-      <div className="wishlist-items" style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
-        {wishlist.map((item) => (
+      <div
+        className="wishlist-items"
+        style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}
+      >
+        {wishlist.map((item, index) => (
           <div
-            key={item.product._id}
+            key={`${item.product._id}-${index}`} // ✅ ensures unique key
             className="wishlist-card"
             style={{
               border: "1px solid #ccc",
@@ -53,10 +68,16 @@ const Wishlist = () => {
               src={item.product.image || "https://via.placeholder.com/150"}
               alt={item.product.name || "Product"}
               height={100}
-              style={{ objectFit: "cover", width: "100%", borderRadius: "4px" }}
+              style={{
+                objectFit: "cover",
+                width: "100%",
+                borderRadius: "4px",
+              }}
             />
             <h3>{item.product.name || "Unnamed Product"}</h3>
-            <p>₹{item.product.discountedPrice || item.product.price || "N/A"}</p>
+            <p>
+              ₹{item.product.discountedPrice || item.product.price || "N/A"}
+            </p>
             <button
               onClick={() => removeFromWishlist(item.product._id)}
               style={{
@@ -79,3 +100,4 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
+

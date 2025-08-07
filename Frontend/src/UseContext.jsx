@@ -71,12 +71,12 @@ function UserContext({ children }) {
 
   const handleAddToCart = async (product) => {
     if(!user){
-
     }
+    console.log(product)
     try {
       await instance.post(
         `/product/cart/${product._id}`,
-        { quantity: 1 },
+        { quantity: 1 ,user },
         { withCredentials: true }
       );
       fetchCart();
@@ -89,7 +89,7 @@ function UserContext({ children }) {
     try {
       await instance.post(
         `/product/wishlist/${product._id}`,
-        {},
+        {user},
         { withCredentials: true }
       );
       fetchWishlist();

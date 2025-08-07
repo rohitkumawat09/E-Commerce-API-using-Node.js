@@ -128,7 +128,7 @@ export const getAllProductsid = async (req, res) => {
 export async function CartData(req, res) {
 
 try {
-    const userId = req.User._id;
+    const userId = req.user.id;
     const productId = req.params.id;
     const quantity = req.body.quantity || 1;
     console.log("User ID:", req.User?._id);
@@ -166,7 +166,7 @@ console.log("Selected Product:", selectedProduct);
 
 export async function getCartData(req, res) {
    try {
-    const userId = req.User._id;
+    const userId = req.user.id;
 
     const user = await User.findById(userId).populate("cart.product");
 
@@ -189,7 +189,7 @@ export async function getCartData(req, res) {
 
 export const removeFromCart = async (req, res) => {
   try {
-    const userId = req.User._id; // ✅ Corrected here
+    const userId = req.user.id; // ✅ Corrected here
     const productId = req.params.id;
 
     const user = await User.findById(userId);
@@ -206,53 +206,11 @@ export const removeFromCart = async (req, res) => {
 };
 
 
-// export async function wishlist(req, res) {
-//   try {
-//     const userId = req.User._id;
-//     const productId = req.params.id;
-
-//     const product = await Product.findById(productId);
-//     if (!product) {
-//       return res.status(404).json({ error: "Product not found" });
-//     }
-
-//     const user = await User.findById(userId).populate("wishlist.product");
-//     if (!user) {
-//       return res.status(404).json({ error: "User not found" });
-//     }
-
- 
-//     const alreadyInWishlist = user.wishlist.some(
-//       (item) => item.product && item.product._id.toString() === productId
-//     );
-
-//     if (alreadyInWishlist) {
-//       return res.status(200).json({
-//         message: "Product already in wishlist",
-//         wishlist: user.wishlist,
-//       });
-//     }
-
-//     user.wishlist.push({ product: productId });
-//     await user.save();
-
-//     res.status(200).json({
-//       message: "Product added to wishlist",
-//       wishlist: user.wishlist,
-//     });
-//   } catch (error) {
-//     console.error("Error updating wishlist:", error);
-//     res.status(500).json({
-//       error: "Error updating wishlist",
-//       details: error.message,
-//     });
-//   }
-// }
-
 export async function wishlist(req, res) {
   try {
-    const userId = req.User._id;
+    const userId = req.user.id;
     const productId = req.params.id;
+    console.log(userId , "hello" , productId)
 
     const productData = await product.findById(productId);  // ✅ Use imported model
     if (!productData) {
@@ -298,7 +256,7 @@ export async function wishlist(req, res) {
 
 export async function getWishlistData(req, res) {
   try {
-    const userId = req.User._id;
+    const userId = req.user.id;
 
     const user = await User.findById(userId).populate("wishlist.product");
 
@@ -318,7 +276,7 @@ export async function getWishlistData(req, res) {
 
 export async function wishListRemoveData(req,res) {
   try {
-        const userId = req.User._id;
+        const userId = req.user.id;
     const productId = req.params.id;
 
     if (!productId) {
@@ -339,4 +297,40 @@ export async function wishListRemoveData(req,res) {
     return res.status(500).json({ message: "Internal server error" });
   }
   
+}
+
+
+export async function updateProduct(req, res) {
+  try {
+    const productId = req.params.id;
+    const updateData = { ...req.body };
+
+    if (req.file) {
+      const uploaded = await uploadToCloudinary(req.file.buffer, "post_pics");
+      updateData.image = uploaded.secure_url;
+    }
+
+    const updatedProduct = await product.findByIdAndUpdate(
+      productId,
+      { $set: updateData },
+      { new: true }
+    );
+
+    console.log("Updated Product:", updatedProduct);
+    console.log("Updated Product:", updatedProduct);
+    if (!updatedProduct) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json({
+      message: "Product updated successfully",
+      product: updatedProduct,
+    });
+  } catch (err) {
+    console.error("Error updating product:", err);
+    res.status(500).json({
+      error: "Product update failed",
+      details: err.message,
+    });
+  }
 }

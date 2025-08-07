@@ -144,11 +144,15 @@ export const Header = () => {
           Home
         </Link>
 
-        <Link to="/admin" style={{ textDecoration: "none", color: "inherit" }}>
-          +
-        </Link>
+          {user?.role === "admin" && (
+          <Link to="/admin" style={{ textDecoration: "none", color: "inherit" }}>
+            +
+          </Link>
+        )}
 
-        {/* Wishlist */}
+      
+
+       
         <Link to="/wishlist" className="nav-item-with-indicator" style={{ textDecoration: "none", color: "inherit" }}>
           Wishlist ({wishlist.length})
           {wishlist.length > 0 && (
@@ -157,8 +161,8 @@ export const Header = () => {
             </div>
           )}
         </Link>
-
-        {/* Cart */}
+    
+    
         <Link to="/cart" className="nav-item-with-indicator" style={{ textDecoration: "none", color: "inherit" }}>
           Cart ({cart.length})
           {cart.length > 0 && (
@@ -168,7 +172,7 @@ export const Header = () => {
           )}
         </Link>
 
-        {/* Welcome & Logout/Login */}
+      
         {user ? (
           <>
             <span className="welcome-msg">
