@@ -31,7 +31,7 @@
 //       await fetchCart();
 //       await fetchWishlist();
 
-//       navigate(referer); 
+//       navigate(referer);
 //     } catch (error) {
 //       console.error("Login error:", error.response?.data || error.message);
 //       alert("Login failed");
@@ -69,7 +69,6 @@
 
 // export default LoginForm;
 
-
 import React, { useState, useContext } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
@@ -82,10 +81,11 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const referer = new URLSearchParams(location.search).get("referer") || "/home";
+  const referer =
+    new URLSearchParams(location.search).get("referer") || "/home";
 
   const { fetchCart, fetchWishlist } = useContext(EcomContext);
-  const { setUser } = useContext(AuthContext);
+  const { fetchUser } = useContext(AuthContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -99,18 +99,16 @@ const LoginForm = () => {
 
       alert("Login successful");
 
-      setUser(res.data.user);
-
+      // setUser(res.data.user);
+      await fetchUser();
       await fetchCart();
       await fetchWishlist();
 
-    
-      if (res.data.user.role === 'admin') {
-        navigate("/admin"); 
+      if (res.data.user.role === "admin") {
+        navigate("/admin");
       } else {
         navigate("/home");
       }
-
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
       alert("Login failed");
@@ -139,12 +137,15 @@ const LoginForm = () => {
         required
       />
 
-      <button type="submit" className="form-button">Login</button>
+      <button type="submit" className="form-button">
+        Login
+      </button>
 
-      <Link to="/"><h3>RegisterForm</h3></Link>
+      <Link to="/">
+        <h3>RegisterForm</h3>
+      </Link>
     </form>
   );
 };
 
 export default LoginForm;
-

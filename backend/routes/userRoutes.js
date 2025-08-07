@@ -68,6 +68,6 @@ router.post('/login', loginUser);
 router.post("/logout", logoutUser);
 
 router.get("/checkToken",authMiddleware ,(req,res)=>{
-    res.json({User:req.User});
+    res.json({user:req.user});
 } );
 export default router;

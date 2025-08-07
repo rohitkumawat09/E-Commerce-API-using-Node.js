@@ -8,24 +8,24 @@ function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const res = await instance.get("/user/checkToken", {
-          withCredentials: true,
-        });
-        setUser(res.data);
-      } catch (err) {
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchUser();
   }, []);
 
+  const fetchUser = async () => {
+    try {
+      const res = await instance.get("/user/checkToken", {
+        withCredentials: true,
+      });
+      setUser(res.data.user);
+    } catch (err) {
+      setUser(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, setUser, loading, setLoading }}>
+    <AuthContext.Provider value={{ user, setUser, loading, setLoading , fetchUser }}>
       {children}
     </AuthContext.Provider>
   );

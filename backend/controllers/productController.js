@@ -128,7 +128,7 @@ export const getAllProductsid = async (req, res) => {
 export async function CartData(req, res) {
 
 try {
-    const userId = req.user.id;
+    const userId = req.user._id;
     const productId = req.params.id;
     const quantity = req.body.quantity || 1;
     console.log("User ID:", req.User?._id);
@@ -166,7 +166,7 @@ console.log("Selected Product:", selectedProduct);
 
 export async function getCartData(req, res) {
    try {
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     const user = await User.findById(userId).populate("cart.product");
 
@@ -189,7 +189,7 @@ export async function getCartData(req, res) {
 
 export const removeFromCart = async (req, res) => {
   try {
-    const userId = req.user.id; // ✅ Corrected here
+    const userId = req.user._id; // ✅ Corrected here
     const productId = req.params.id;
 
     const user = await User.findById(userId);
@@ -208,7 +208,7 @@ export const removeFromCart = async (req, res) => {
 
 export async function wishlist(req, res) {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id;
     const productId = req.params.id;
     console.log(userId , "hello" , productId)
 
@@ -256,7 +256,7 @@ export async function wishlist(req, res) {
 
 export async function getWishlistData(req, res) {
   try {
-    const userId = req.user.id;
+    const userId = req.user._id;
 
     const user = await User.findById(userId).populate("wishlist.product");
 
@@ -276,7 +276,7 @@ export async function getWishlistData(req, res) {
 
 export async function wishListRemoveData(req,res) {
   try {
-        const userId = req.user.id;
+        const userId = req.user._id;
     const productId = req.params.id;
 
     if (!productId) {
