@@ -14,11 +14,14 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT;
 
-console.log('DEPLOYED_FRONTEND_URL:', process.env.DEPLOYED_FRONTEND_URL);
+console.log("DEPLOYED_FRONTEND_URL:", process.env.DEPLOYED_FRONTEND_URL);
 
 connectDB();
 
-const allowedOrigins = [process.env.DEPLOYED_FRONTEND_URL];
+const allowedOrigins = [
+  process.env.DEPLOYED_FRONTEND_URL,
+  "http://localhost:4000",
+];
 
 const localhostRegex = /^(https:\/\/localhost:\d+|http:\/\/localhost:\d+)$/;
 
