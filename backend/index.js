@@ -22,6 +22,7 @@ const localhostRegex = /^(https:\/\/localhost:\d+|http:\/\/localhost:\d+)$/;
 
 const corsOptions = {
   origin: function (origin, callback) {
+    console.log("origin", origin);
     if (
       !origin ||
       allowedOrigins.includes(origin) ||
