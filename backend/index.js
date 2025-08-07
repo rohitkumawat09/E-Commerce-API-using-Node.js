@@ -16,18 +16,28 @@ const port = process.env.PORT;
 
 connectDB();
 
-app.use(express.json());
+const allowedOrigins = [process.env.DEPLOYED_FRONTEND_URL];
+
+const localhostRegex = /^(https:\/\/localhost:\d+|http:\/\/localhost:\d+)$/;
 
 const corsOptions = {
-  origin: [
-    /^(https:\/\/localhost:\d+|http:\/\/localhost:\d+)$/,
-    process.env.DEPLOYED_FRONTEND_URL,
-  ],
+  origin: function (origin, callback) {
+    if (
+      !origin ||
+      allowedOrigins.includes(origin) ||
+      localhostRegex.test(origin)
+    ) {
+      return callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   credentials: true, // Allow cookies to be sent with requests
 };
 app.use(cors(corsOptions));
 
+app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
