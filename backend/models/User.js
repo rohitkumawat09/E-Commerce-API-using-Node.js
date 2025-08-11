@@ -20,6 +20,19 @@ import mongoose from "mongoose";
 
 
 
+
+
+  orders: [
+    {
+      product: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+      quantity: { type: Number, default: 1 },
+      address: { type: String },
+      phone: { type: String },
+      paymentMethod: { type: String, enum: ["upi", "netbanking", "cod"] },
+      status: { type: String, default: "Pending" },
+      orderDate: { type: Date, default: Date.now }
+    }
+  ],
 role: {
     type: String,  
     default: 'user',

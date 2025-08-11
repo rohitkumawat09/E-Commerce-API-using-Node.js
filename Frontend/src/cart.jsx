@@ -9,6 +9,7 @@ function Cart() {
     handleRemoveFromCart,
     increaseQuantity,
     decreaseQuantity,
+    orders,
   } = useContext(EcomContext);
 
   const totalAmount = cart.reduce(
@@ -16,6 +17,11 @@ function Cart() {
       acc + (item.discountedPrice || 0) * (item.quantity || 0),
     0
   );
+
+   // Function to check if product is ordered
+  const isProductOrdered = (productId) => {
+    return orders.some(order => order.product?._id === productId);
+  };
 
   return (
     <div className="cart-container">
@@ -47,8 +53,9 @@ function Cart() {
                       style={{
                         padding: "4px 10px",
                         marginRight: "6px",
-                        cursor: "pointer",
+                        cursor: isProductOrdered(item._id) ? "not-allowed" : "pointer",
                       }}
+                      disabled={isProductOrdered(item._id)} 
                     >
                       −
                     </button>
@@ -58,8 +65,9 @@ function Cart() {
                       style={{
                         padding: "4px 10px",
                         marginLeft: "6px",
-                        cursor: "pointer",
+                        cursor: isProductOrdered(item._id) ? "not-allowed" : "pointer",
                       }}
+                      disabled={isProductOrdered(item._id)} 
                     >
                       +
                     </button>

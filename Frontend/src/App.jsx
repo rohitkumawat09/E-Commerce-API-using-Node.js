@@ -15,6 +15,7 @@ import EditProductForm from "./EditProductForm.jsx";
 import PublicRoute from './PublicRoute.jsx'; // ✅ नया इम्पोर्ट
 
 import Productorder from './productorder.jsx';
+import  GetMyOrders  from './GetMyOrders.jsx'; 
 
 
 
@@ -69,6 +70,16 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             < Productorder />
+          </ProtectedRoute>
+        ),
+      },
+
+
+        {
+        path: '/GetMyOrders',
+        element: (
+          <ProtectedRoute>
+            < GetMyOrders />
           </ProtectedRoute>
         ),
       },

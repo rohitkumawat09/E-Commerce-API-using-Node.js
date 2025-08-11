@@ -1,26 +1,38 @@
-import { createContext, useEffect, useState,useContext  } from "react";
-import axios from "axios";
+import { createContext, useEffect, useState, useContext } from "react";
 import { instance } from "../axiosConfig";
 import { AuthContext } from "./AuthContext";
-
 
 export const EcomContext = createContext();
 
 function UserContext({ children }) {
   const [cart, setCart] = useState([]);
   const [wishlist, setWishlist] = useState([]);
-  const { user } = useContext(AuthContext); 
+  const { user } = useContext(AuthContext);
+  const [orders, setOrders] = useState([]);
 
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const res = await instance.get("/orders/my-orders", {
+          withCredentials: true,
+        });
+        setOrders(res.data.orders || res.data);
+      } catch (error) {
+        console.error("Failed to fetch orders", error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
 
   useEffect(() => {
     if (user) {
-   
       fetchCart();
       fetchWishlist();
     }
   }, [user]);
-  
-  console.log(user)
+
+   console.log(user)
 
   const fetchCart = async () => {
     try {
@@ -29,7 +41,7 @@ function UserContext({ children }) {
       });
 
       const formatted = res.data.cart
-      .filter(item => item.product)
+        .filter((item) => item.product)
         .map((item) => ({
           ...item.product,
           quantity: item.quantity,
@@ -51,39 +63,34 @@ function UserContext({ children }) {
     }
   };
 
-  
+  const fetchWishlist = async () => {
+    try {
+      const res = await instance.get("/product/wishlist/data", {
+        withCredentials: true,
+      });
 
-const fetchWishlist = async () => {
-  try {
-    const res = await instance.get("/product/wishlist/data", {
-      withCredentials: true,
-    });
+      const formatted = res.data.wishlist
+        .filter((item) => item.product)
+        .map((item) => ({
+          ...item.product,
+          _id: item.product._id,
+        }));
 
-    const formatted = res.data.wishlist
-      .filter(item => item.product) // ✅ null check
-      .map((item) => ({
-        ...item.product,
-        _id: item.product._id,
-      }));
-
-    setWishlist(formatted);
-  } catch (err) {
-    console.error("Error fetching wishlist:", err);
-  }
-};
-
-  
-
-    
+      setWishlist(formatted);
+    } catch (err) {
+      console.error("Error fetching wishlist:", err);
+    }
+  };
 
   const handleAddToCart = async (product) => {
-    if(!user){
+    if (!user) {
+      alert("Please login to add to cart");
+      return;
     }
-    console.log(product)
     try {
       await instance.post(
         `/product/cart/${product._id}`,
-        { quantity: 1 ,user },
+        { quantity: 1 },
         { withCredentials: true }
       );
       fetchCart();
@@ -93,10 +100,14 @@ const fetchWishlist = async () => {
   };
 
   const handleAddToWishlist = async (product) => {
+    if (!user) {
+      alert("Please login to add to wishlist");
+      return;
+    }
     try {
       await instance.post(
         `/product/wishlist/${product._id}`,
-        {user},
+        {},
         { withCredentials: true }
       );
       fetchWishlist();
@@ -105,36 +116,50 @@ const fetchWishlist = async () => {
     }
   };
 
+  const updateQuantityInCart = async (productId, newQuantity) => {
+    try {
+      await instance.post(
+        `/product/cart/${productId}`,
+        { quantity: newQuantity },
+        { withCredentials: true }
+      );
+
+      setCart((prevCart) =>
+        prevCart.map((item) =>
+          item._id === productId ? { ...item, quantity: newQuantity } : item
+        )
+      );
+    } catch (error) {
+      console.error("Error updating cart quantity:", error);
+    }
+  };
+
   const increaseQuantity = async (id) => {
     const product = cart.find((item) => item._id === id);
     if (!product || product.quantity >= 10) return;
-
-    try {
-      await instance.post(
-        `/product/cart/${id}`,
-        { quantity: 1 },
-        { withCredentials: true }
-      );
-      fetchCart();
-    } catch (err) {
-      console.error("Error increasing quantity:", err);
-    }
+    await updateQuantityInCart(id, product.quantity + 1);
   };
 
   const decreaseQuantity = async (id) => {
     const product = cart.find((item) => item._id === id);
     if (!product || product.quantity <= 1) return;
+    await updateQuantityInCart(id, product.quantity - 1);
+  };
 
-    try {
-      await instance.post(
-        `/product/cart/${id}`,
-        { quantity: -1 },
-        { withCredentials: true }
-      );
-      fetchCart();
-    } catch (err) {
-      console.error("Error decreasing quantity:", err);
-    }
+  const updateCartQuantityAfterOrder = (productId, orderedQuantity) => {
+    setCart((prevCart) => {
+      return prevCart.reduce((acc, item) => {
+        if (item._id === productId) {
+          const newQuantity = item.quantity - orderedQuantity;
+          if (newQuantity > 0) {
+            acc.push({ ...item, quantity: newQuantity });
+          }
+        } else {
+          acc.push(item);
+        }
+        return acc;
+      }, []);
+    });
   };
 
   const handleRemoveFromCart = async (id) => {
@@ -162,7 +187,10 @@ const fetchWishlist = async () => {
         setWishlist,
         handleAddToWishlist,
         fetchWishlist,
-      
+        orders,
+        setOrders,
+        updateCartQuantityAfterOrder,
+        updateQuantityInCart,
       }}
     >
       {children}

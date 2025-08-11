@@ -122,32 +122,24 @@ export const getAllProductsid = async (req, res) => {
 
 
 
-
-
-
 export async function CartData(req, res) {
-
-try {
+  try {
     const userId = req.user._id;
     const productId = req.params.id;
     const quantity = req.body.quantity || 1;
-    console.log("User ID:", req.User?._id);
-console.log("Params ID:", req.params?.id);
-console.log("Body:", req.body);
-
 
     const selectedProduct = await product.findById(productId);
-    if (!selectedProduct) return res.status(404).json({ error: "Product not found" });
-console.log("Selected Product:", selectedProduct);
+    if (!selectedProduct)
+      return res.status(404).json({ error: "Product not found" });
 
     const user = await User.findById(userId);
 
-    const existingItem = user.cart.find(item =>
-      item.product.toString() === productId
+    const existingItem = user.cart.find(
+      (item) => item.product.toString() === productId
     );
 
     if (existingItem) {
-      existingItem.quantity += quantity;
+      existingItem.quantity = quantity;
     } else {
       user.cart.push({ product: productId, quantity });
     }
@@ -158,9 +150,6 @@ console.log("Selected Product:", selectedProduct);
   } catch (error) {
     res.status(500).json({ error: "Cart update failed", details: error.message });
   }
-
-  
- 
 }
 
 

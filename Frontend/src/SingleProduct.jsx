@@ -9,6 +9,7 @@ const SingleProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const { orders } = useContext(EcomContext);
 
   const [product, setProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
@@ -45,6 +46,10 @@ const SingleProduct = () => {
   }, [id]);
 
 if (!product || loading) return <p>Loading...</p>
+
+ const isOrdered = orders.some(order => order.product?._id === product._id);
+
+
 
   const isInCart = cart?.some((item) => item._id === product._id);
   const isInWishlist = wishlist?.some((item) => item._id === product._id);
@@ -206,19 +211,21 @@ console.log(user?.role, "user role")
           >
             {isInWishlist ? "Already in Wishlist" : "Add to Wishlist"}
           </button>
+
 <button
   onClick={handleBuy}
+  disabled={isOrdered}
   style={{
     marginTop: "20px",
     padding: "10px 20px",
-    backgroundColor: "#007bff",
+    backgroundColor: isOrdered ? "#ccc" : "#007bff",
     color: "#fff",
     border: "none",
-    cursor: "pointer",
+    cursor: isOrdered ? "not-allowed" : "pointer",
     marginLeft: "20px",
   }}
 >
-  Buy
+  {isOrdered ? "Already Ordered" : "Buy"}
 </button>
 
         </div>

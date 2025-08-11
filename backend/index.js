@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 
 import userRouter from "./routes/userRoutes.js";
 import product from "./routes/productRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 import swaggerSpec from "./swagger.js";
 import swaggerUi from "swagger-ui-express";
@@ -50,6 +51,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use("/user", userRouter);
 app.use("/product", product);
+app.use("/orders", orderRoutes);
 
 app.listen(port, () => {
   console.log(`Server started at port ${port}`);
