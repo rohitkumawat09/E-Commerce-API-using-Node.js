@@ -162,6 +162,8 @@ export const Header = () => {
           )}
         </Link>
     
+
+    
     
         <Link to="/cart" className="nav-item-with-indicator" style={{ textDecoration: "none", color: "inherit" }}>
           Cart ({cart.length})

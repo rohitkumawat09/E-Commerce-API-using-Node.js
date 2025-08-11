@@ -10,7 +10,8 @@ import {
   wishlist,
   getWishlistData,
   wishListRemoveData,
-  updateProduct
+  updateProduct,
+deleteProduct
 } from "../controllers/productController.js";
 import authMiddleware from "../middleware/authMiddleware.js";
 
@@ -227,12 +228,27 @@ router.get("/wishlist/Data", authMiddleware, getWishlistData);
  */
 router.delete("/wishList/remove/:id", authMiddleware, wishListRemoveData);
 
+
 router.put(
   "/product/edit/:id",
-  authMiddleware,
-  adminMiddleware,
+  authMiddleware,       
+  adminMiddleware,   
   upload.single("image"),
   updateProduct
 );
+
+
+router.delete(
+  "/delete/:id",
+  authMiddleware,
+  adminMiddleware,
+  deleteProduct
+);
+
+
+
+
+
+
 
 export default router;

@@ -1,61 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { instance } from "../axiosConfig";
+import { EcomContext } from "./UseContext";
 
 const Wishlist = () => {
-  const [wishlist, setWishlist] = useState([]);
-
-  const fetchWishlist = async () => {
-    try {
-      const res = await instance.get("/product/wishlist/data", {
-        withCredentials: true,
-      });
-
-      const uniqueWishlist = [];
-      const productIds = new Set();
-
-      res.data.wishlist.forEach((item) => {
-        if (!productIds.has(item.product._id)) {
-          productIds.add(item.product._id);
-          uniqueWishlist.push(item);
-        }
-      });
-
-      setWishlist(uniqueWishlist);
-    } catch (error) {
-      console.error("Error fetching wishlist:", error);
-    }
-  };
-
-  const removeFromWishlist = async (productId) => {
-    try {
-      await instance.delete(`/product/wishList/remove/${productId}`, {
-        withCredentials: true,
-      });
-      setWishlist((prev) =>
-        prev.filter((item) => item.product._id !== productId)
-      );
-    } catch (error) {
-      console.error("Error removing from wishlist:", error);
-    }
-  };
+  const { wishlist, setWishlist, fetchWishlist } = useContext(EcomContext);
+  const [removingIds, setRemovingIds] = useState([]);
 
   useEffect(() => {
     fetchWishlist();
   }, []);
 
-  if (wishlist.length === 0) return <h2>Wishlist is empty</h2>;
+  const removeFromWishlist = async (productId) => {
+    try {
+      setRemovingIds((prev) => [...prev, productId]);
+
+      await instance.delete(`/product/wishList/remove/${productId}`, {
+        withCredentials: true,
+      });
+
+      setWishlist((prev) => prev.filter((item) => item._id !== productId));
+    } catch (error) {
+      console.error("Error removing from wishlist:", error);
+    } finally {
+      setRemovingIds((prev) => prev.filter((id) => id !== productId));
+    }
+  };
+
+  const uniqueWishlist = wishlist.filter(
+    (item, index, self) => index === self.findIndex((t) => t._id === item._id)
+  );
+
+  if (uniqueWishlist.length === 0) return <h2>Wishlist is empty</h2>;
 
   return (
     <div className="wishlist">
       <h2>My Wishlist</h2>
-      <div
-        className="wishlist-items"
-        style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}
-      >
-        {wishlist.map((item, index) => (
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "20px" }}>
+        {uniqueWishlist.map((item) => (
           <div
-            key={`${item.product._id}-${index}`} // ✅ ensures unique key
-            className="wishlist-card"
+            key={item._id} 
             style={{
               border: "1px solid #ccc",
               padding: "15px",
@@ -65,8 +48,8 @@ const Wishlist = () => {
             }}
           >
             <img
-              src={item.product.image || "https://via.placeholder.com/150"}
-              alt={item.product.name || "Product"}
+              src={item.image || "https://via.placeholder.com/150"}
+              alt={item.name || "Product"}
               height={100}
               style={{
                 objectFit: "cover",
@@ -74,23 +57,26 @@ const Wishlist = () => {
                 borderRadius: "4px",
               }}
             />
-            <h3>{item.product.name || "Unnamed Product"}</h3>
-            <p>
-              ₹{item.product.discountedPrice || item.product.price || "N/A"}
-            </p>
+            <h3>{item.name}</h3>
+            <p>₹{item.discountedPrice || item.price || "N/A"}</p>
             <button
-              onClick={() => removeFromWishlist(item.product._id)}
+              onClick={() => removeFromWishlist(item._id)}
+              disabled={removingIds.includes(item._id)}
               style={{
                 marginTop: "10px",
                 padding: "5px 10px",
-                backgroundColor: "#f44336",
+                backgroundColor: removingIds.includes(item._id)
+                  ? "#aaa"
+                  : "#f44336",
                 color: "#fff",
                 border: "none",
-                cursor: "pointer",
+                cursor: removingIds.includes(item._id)
+                  ? "not-allowed"
+                  : "pointer",
                 borderRadius: "4px",
               }}
             >
-              Remove
+              {removingIds.includes(item._id) ? "Removing..." : "Remove"}
             </button>
           </div>
         ))}
@@ -100,4 +86,3 @@ const Wishlist = () => {
 };
 
 export default Wishlist;
-

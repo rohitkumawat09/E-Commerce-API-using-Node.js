@@ -553,3 +553,155 @@ box-sizing: border-box;}
   color: green;
   font-weight: 500;
 }
+
+
+
+.edit-product-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.edit-product-heading {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 28px;
+  color: #333;
+}
+
+.edit-product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-input,
+.form-textarea,
+.form-file-input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.form-textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.image-preview {
+  max-width: 200px;
+  margin-top: 10px;
+  border-radius: 8px;
+}
+
+.form-submit-btn {
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.form-submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.checkout-container {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.product-summary {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.product-summary h3 {
+  margin: 0;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #e53935;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #888;
+  font-size: 14px;
+  margin-left: 8px;
+}
+
+.user-info {
+  margin-top: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.checkout-form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.checkout-form label {
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.checkout-form textarea,
+.checkout-form input[type="tel"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.payment-method {
+  margin-top: 15px;
+}
+
+.payment-method h4 {
+  margin-bottom: 8px;
+}
+
+.payment-method label {
+  display: block;
+  margin: 5px 0;
+  font-weight: normal;
+}
+
+.place-order-btn {
+  background-color: #4caf50;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.place-order-btn:hover {
+  background-color: #45a049;
+}

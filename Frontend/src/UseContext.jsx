@@ -29,6 +29,7 @@ function UserContext({ children }) {
       });
 
       const formatted = res.data.cart
+      .filter(item => item.product)
         .map((item) => ({
           ...item.product,
           quantity: item.quantity,
@@ -51,22 +52,25 @@ function UserContext({ children }) {
   };
 
   
-  const fetchWishlist = async () => {
-    try {
-      const res = await instance.get("/product/wishlist/data", {
-        withCredentials: true,
-      });
 
-      const formatted = res.data.wishlist.map((item) => ({
+const fetchWishlist = async () => {
+  try {
+    const res = await instance.get("/product/wishlist/data", {
+      withCredentials: true,
+    });
+
+    const formatted = res.data.wishlist
+      .filter(item => item.product) // ✅ null check
+      .map((item) => ({
         ...item.product,
         _id: item.product._id,
       }));
 
-      setWishlist(formatted);
-    } catch (err) {
-      console.error("Error fetching wishlist:", err);
-    }
-  };
+    setWishlist(formatted);
+  } catch (err) {
+    console.error("Error fetching wishlist:", err);
+  }
+};
 
   
 

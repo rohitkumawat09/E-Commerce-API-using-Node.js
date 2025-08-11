@@ -98,3 +98,5 @@ export const logoutUser = async (req, res) => {
     res.status(500).json({ message: "Logout failed" });
   }
 };
+
+

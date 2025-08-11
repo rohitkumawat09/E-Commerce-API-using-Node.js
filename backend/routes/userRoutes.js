@@ -70,4 +70,6 @@ router.post("/logout", logoutUser);
 router.get("/checkToken",authMiddleware ,(req,res)=>{
     res.json({user:req.user});
 } );
+
+
 export default router;

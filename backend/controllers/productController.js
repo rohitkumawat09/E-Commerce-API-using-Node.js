@@ -254,6 +254,24 @@ export async function wishlist(req, res) {
 
 
 
+// export async function getWishlistData(req, res) {
+//   try {
+//     const userId = req.user._id;
+
+//     const user = await User.findById(userId).populate("wishlist.product");
+
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     res.status(200).json({ wishlist: user.wishlist });
+//   } catch (error) {
+//     console.error("Error fetching wishlist:", error);
+//     res.status(500).json({ message: "Server error while fetching wishlist" });
+//   }
+// }
+
+
 export async function getWishlistData(req, res) {
   try {
     const userId = req.user._id;
@@ -264,7 +282,19 @@ export async function getWishlistData(req, res) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({ wishlist: user.wishlist });
+    // ✅ Duplicate remove logic
+    const uniqueWishlist = [];
+    const seen = new Set();
+
+    user.wishlist.forEach(item => {
+      const productId = item.product?._id?.toString();
+      if (productId && !seen.has(productId)) {
+        seen.add(productId);
+        uniqueWishlist.push(item);
+      }
+    });
+
+    res.status(200).json({ wishlist: uniqueWishlist });
   } catch (error) {
     console.error("Error fetching wishlist:", error);
     res.status(500).json({ message: "Server error while fetching wishlist" });
@@ -334,3 +364,21 @@ export async function updateProduct(req, res) {
     });
   }
 }
+
+
+
+export const deleteProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const deleted = await product.findByIdAndDelete(productId); // lowercase 'product'
+    if (!deleted) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+};
+
+
+

@@ -39,7 +39,7 @@ const corsOptions = {
     }
   },
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-  credentials: true, // Allow cookies to be sent with requests
+  credentials: true, 
 };
 app.use(cors(corsOptions));
 

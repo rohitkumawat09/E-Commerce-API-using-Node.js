@@ -10,7 +10,13 @@ import Cart from './cart.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import AuthProvider from './AuthContext.jsx';
 import Wishlist from './wishlist.jsx';
-import Admin from "./admin.jsx";
+import Admin from "./ProductAddForm.jsx";
+import EditProductForm from "./EditProductForm.jsx";
+import PublicRoute from './PublicRoute.jsx'; // ✅ नया इम्पोर्ट
+
+import Productorder from './productorder.jsx';
+
+
 
 
 const router = createBrowserRouter([
@@ -18,8 +24,25 @@ const router = createBrowserRouter([
     path: '/',
     element: <First />,
     children: [
-      { index: true, element: <RegisterForm /> },
-      { path: 'LoginForm', element: <LoginForm /> },
+      // { index: true, element: <RegisterForm /> },
+      // { path: 'LoginForm', element: <LoginForm /> },
+
+           { 
+        index: true, 
+        element: (
+          <PublicRoute>
+            <RegisterForm /> 
+          </PublicRoute>
+        ) 
+      },
+      { 
+        path: 'LoginForm', 
+        element: (
+          <PublicRoute> 
+            <LoginForm /> 
+          </PublicRoute>
+        ) 
+      },
 
       {
         path: 'Home',
@@ -33,10 +56,19 @@ const router = createBrowserRouter([
 
       
         {
-        path: 'admin',
+        path: '/AddProduct',
         element: (
           <ProtectedRoute>
             < Admin />
+          </ProtectedRoute>
+        ),
+      },
+
+          {
+        path: '/productorder',
+        element: (
+          <ProtectedRoute>
+            < Productorder />
           </ProtectedRoute>
         ),
       },
@@ -57,6 +89,16 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+
+      {
+  path: 'admin/edit-product/:id',
+  element: (
+    <ProtectedRoute>
+      <EditProductForm />
+    </ProtectedRoute>
+  ),
+},
+
       {
         path: 'product/:id',
         element: (
