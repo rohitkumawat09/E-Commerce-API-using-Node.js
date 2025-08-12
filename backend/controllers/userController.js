@@ -27,45 +27,104 @@ export const registerUser = async (req, res) => {
   }
 };
 
+// export const loginUser = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+
+//     const user = await User.findOne({ email });
+//     console.log(user);
+    
+//     if (!user) {
+//       return res.status(401).json({ error: 'Invalid email or password' });
+//     }
+
+//     const isMatch = await bcrypt.compare(password, user.password);
+//     console.log(isMatch);
+    
+//     if (!isMatch) {
+//       return res.status(401).json({ error: 'Invalid email or password' });
+//     }
+
+//     const token = jwt.sign(
+//       { userId: user._id, email: user.email
+// , role: user.role
+//        },
+//       process.env.JWT_SECRET,
+//       { expiresIn: '7d' }
+         
+//     );
+//     console.log(token);
+    
+
+
+
+//   res.cookie('token', token, {
+//      httpOnly: true,
+//  secure: true,
+//  sameSite: "None",
+//  maxAge:3600000
+//     });
+
+
+
+//     res.status(200).json({
+//       message: 'Login successful',
+//       token,
+//       user: {
+//         id: user._id,
+//         name: user.name,
+//         email: user.email,
+//             role: user.role
+//       }
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: 'Login failed' });
+//   }
+// };
+
+
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+
     const user = await User.findOne({ email });
-    console.log(user);
-    
+    console.log("User Found:", user);
+
     if (!user) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
+    if (!user.password) {
+      console.error("Error: Password is missing in DB for user:", email);
+      return res.status(500).json({ error: 'Server configuration error: password missing' });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log(isMatch);
-    
+    console.log("Password Match:", isMatch);
+
     if (!isMatch) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
     const token = jwt.sign(
-      { userId: user._id, email: user.email
-, role: user.role
-       },
+      { userId: user._id, email: user.email, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
-         
     );
-    console.log(token);
-    
 
+    console.log("JWT Token Generated:", token);
 
-
-  res.cookie('token', token, {
-     httpOnly: true,
- secure: true,
- sameSite: "None",
- maxAge:3600000
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // ✅ Localhost पर false, production में true
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      maxAge: 3600000
     });
-
-
 
     res.status(200).json({
       message: 'Login successful',
@@ -74,12 +133,12 @@ export const loginUser = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
-            role: user.role
+        role: user.role
       }
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Login failed' });
+    console.error("Login Error:", err);
+    res.status(500).json({ error: 'Login failed', details: err.message });
   }
 };
 
