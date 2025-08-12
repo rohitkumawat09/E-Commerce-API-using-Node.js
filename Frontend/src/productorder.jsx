@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { EcomContext } from "./UseContext"; 
+import { EcomContext } from "./UseContext";
 import { instance } from "../axiosConfig";
 
 const ProductOrder = () => {
@@ -14,13 +14,16 @@ const ProductOrder = () => {
     return <p>No product selected.</p>;
   }
 
-  const cartItem = cart.find(item => item._id === product._id);
+  const cartItem = cart.find((item) => item._id === product._id);
   const initialQuantity = cartItem ? cartItem.quantity : 1;
 
   const [quantity, setQuantity] = useState(initialQuantity);
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
+  const [loading, setLoading] = useState(false); 
+  const [message, setMessage] = useState(""); 
+  const [error, setError] = useState("");
 
   const handleQuantityChange = (e) => {
     const val = Math.max(1, parseInt(e.target.value) || 1);
@@ -32,9 +35,13 @@ const ProductOrder = () => {
     e.preventDefault();
 
     if (!address || !phone || !paymentMethod) {
-      alert("Please fill all required fields.");
+      setError("Please fill all required fields.");
       return;
     }
+
+    setLoading(true);
+    setMessage("");
+    setError("");
 
     try {
       await instance.post(
@@ -49,14 +56,14 @@ const ProductOrder = () => {
         { withCredentials: true }
       );
 
-      alert("Order placed successfully!");
-
+      setMessage("✅ Order placed successfully!");
       updateCartQuantityAfterOrder(product._id, quantity);
 
-      navigate("/");
-    } catch (error) {
-      console.error("Order placement error:", error);
-      alert("Failed to place order.");
+      setTimeout(() => navigate("/"), 1500); // redirect after short delay
+    } catch (err) {
+      console.error("Order placement error:", err);
+      setError("❌ Failed to place order. Please try again.");
+      setLoading(false); // re-enable button for retry
     }
   };
 
@@ -146,9 +153,21 @@ const ProductOrder = () => {
           </label>
         </div>
 
-        <button type="submit" className="place-order-btn">
-          Place Order
-        </button>
+        {message && <p style={{ color: "green" }}>{message}</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
+   <button
+  type="submit"
+  className="place-order-btn"
+  disabled={loading}
+  style={{
+    cursor: loading ? "not-allowed" : "pointer",
+    opacity: loading ? 0.7 : 1,
+  }}
+>
+  {loading ? "Placing Order..." : "Place Order"}
+</button>
+
       </form>
     </div>
   );

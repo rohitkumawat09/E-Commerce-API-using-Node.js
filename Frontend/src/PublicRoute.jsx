@@ -5,10 +5,10 @@ import { AuthContext } from "./AuthContext";
 function PublicRoute({ children }) {
   const { user, loading } = useContext(AuthContext);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <div className="spinner"></div>;
 
   if (user) {
-    // अगर पहले से login है तो Home पर भेज दो
+    
     return <Navigate to="/Home" replace />;
   }
 

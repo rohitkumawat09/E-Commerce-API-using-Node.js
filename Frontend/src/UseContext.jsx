@@ -10,27 +10,26 @@ function UserContext({ children }) {
   const { user } = useContext(AuthContext);
   const [orders, setOrders] = useState([]);
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const res = await instance.get("/orders/my-orders", {
-          withCredentials: true,
-        });
-        setOrders(res.data.orders || res.data);
-      } catch (error) {
-        console.error("Failed to fetch orders", error);
-      }
-    };
 
+const fetchOrders = async () => {
+  try {
+    const res = await instance.get("/orders/my-orders", {
+      withCredentials: true,
+    });
+    setOrders(res.data.orders || res.data);
+  } catch (error) {
+    console.error("Failed to fetch orders", error);
+  }
+};
+
+useEffect(() => {
+  if (user) {
     fetchOrders();
-  }, []);
+    fetchCart();
+    fetchWishlist();
+  }
+}, [user]);
 
-  useEffect(() => {
-    if (user) {
-      fetchCart();
-      fetchWishlist();
-    }
-  }, [user]);
 
    console.log(user)
 
@@ -191,6 +190,7 @@ function UserContext({ children }) {
         setOrders,
         updateCartQuantityAfterOrder,
         updateQuantityInCart,
+        fetchOrders,
       }}
     >
       {children}

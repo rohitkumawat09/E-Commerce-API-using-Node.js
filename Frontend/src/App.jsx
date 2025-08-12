@@ -16,6 +16,7 @@ import PublicRoute from './PublicRoute.jsx'; // ✅ नया इम्पोर
 
 import Productorder from './productorder.jsx';
 import  GetMyOrders  from './GetMyOrders.jsx'; 
+import AllOrders from './AllOrders.jsx';
 
 
 
@@ -80,6 +81,15 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             < GetMyOrders />
+          </ProtectedRoute>
+        ),
+      },
+
+        {
+        path: '/AllOrders',
+        element: (
+          <ProtectedRoute>
+            < AllOrders />
           </ProtectedRoute>
         ),
       },

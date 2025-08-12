@@ -705,3 +705,23 @@ h2 {
 .place-order-btn:hover {
   background-color: #45a049;
 }
+.spinner {
+  display: flex;
+  justify-content: center;
+  margin: auto;
+   width: 72px;
+   height: 72px;
+   border-radius: 50%;
+   padding: 8.6px;
+   background: conic-gradient(from 135deg at top,#474bff 90deg, #0000 0) 0 calc(50% - 5.8px)/24.5px 12.25px,
+          radial-gradient(farthest-side at bottom left,#0000 calc(100% - 8.6px),#474bff calc(100% - 7.2px) 99%,#0000) top right/50%  50% content-box content-box,
+          radial-gradient(farthest-side at top,#0000 calc(100% - 8.6px),#474bff calc(100% - 7.2px) 99%,#0000) bottom   /100% 50% content-box content-box;
+   background-repeat: no-repeat;
+   animation: spinner-v8og74 0.8s infinite linear;
+}
+
+@keyframes spinner-v8og74 {
+   100% {
+      transform: rotate(1turn);
+   }
+}

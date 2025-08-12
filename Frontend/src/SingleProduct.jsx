@@ -45,7 +45,7 @@ const SingleProduct = () => {
     fetchSingleProduct();
   }, [id]);
 
-if (!product || loading) return <p>Loading...</p>
+if (!product || loading) return <div class="spinner"></div>
 
  const isOrdered = orders.some(order => order.product?._id === product._id);
 

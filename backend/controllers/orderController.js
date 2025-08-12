@@ -30,6 +30,9 @@ export const createOrder = async (req, res) => {
   }
 };
 
+
+
+
 export const getMyOrders = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).populate(
@@ -43,10 +46,12 @@ export const getMyOrders = async (req, res) => {
   }
 };
 
+
+
 export const getAllOrders = async (req, res) => {
   try {
     const users = await User.find({ "orders.0": { $exists: true } })
-      .populate("orders.product", "name discountedPrice originalPrice")
+      .populate("orders.product", "name discountedPrice originalPrice image") 
       .select("name email orders");
 
     res.json(users);
