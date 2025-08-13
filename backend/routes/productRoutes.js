@@ -70,7 +70,6 @@ const router = express.Router();
  *       500:
  *         description: Product creation failed
  */
-// router.post("/add", upload.single("image"), createForm);
 router.post("/add", authMiddleware, adminMiddleware, upload.single("image"), createForm);
 
 
