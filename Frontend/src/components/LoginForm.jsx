@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../AuthContext";
 import { instance } from "../../axiosConfig";
 import { EcomContext } from "../UseContext";
+import axios from "axios";
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -19,8 +20,8 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      const res = await instance.post(
-        "/user/login",
+      const res = await axios.post(
+        "https://e-commerce-api-using-node-js-1.onrender.com/user/login",
         { email, password },
         { withCredentials: true }
       );
