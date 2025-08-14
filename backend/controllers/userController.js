@@ -13,6 +13,10 @@ export const registerUser = async (req, res) => {
 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
+ console.log("Generated Salt:", salt); 
+
+    console.log("Plain Password:", password);
+
 
     const user = new User({ name, email, 
  role: role === "admin" ? "admin" : "User", 
@@ -39,7 +43,7 @@ export const loginUser = async (req, res) => {
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log(isMatch);
+     console.log("Does plain password match hashed password?", isMatch);
     
     if (!isMatch) {
       return res.status(401).json({ error: 'Invalid email or password' });

@@ -31,7 +31,7 @@ useEffect(() => {
 }, [user]);
 
 
-   console.log(user)
+  //  console.log(user)
 
   const fetchCart = async () => {
     try {
