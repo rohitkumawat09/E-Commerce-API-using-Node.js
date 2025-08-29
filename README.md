@@ -22,41 +22,42 @@ Full-stack **E-Commerce Application**:
 ---
 
 ## 📂 Backend Folder Structure
+
 Backend/
-├── config/ # Database & third-party configs
-│ ├── db.js # MongoDB connection 🔹 Important for DB setup
-│ ├── cloudinary.js # Cloudinary config 🔹 For image uploads
-│ └── stripe.js # Stripe payment config 🔹 For payment integration
-├── controllers/ # Business logic (APIs handling)
-│ ├── authController.js 🔹 Handles login/register
-│ ├── productController.js 🔹 CRUD for products
-│ ├── cartController.js 🔹 Cart API logic
-│ ├── wishlistController.js 🔹 Wishlist API logic
-│ ├── orderController.js 🔹 Order API logic
-│ └── uploadController.js 🔹 File uploads
-├── middlewares/ # Custom middlewares
-│ ├── authMiddleware.js # JWT verify middleware 🔹 Protect routes
-│ └── errorHandler.js # Global error handler 🔹 Handles API errors
-├── models/ # Mongoose models (MongoDB Schema)
-│ ├── User.js 🔹 User schema
-│ ├── Product.js 🔹 Product schema
-│ ├── Cart.js 🔹 Cart schema
-│ ├── Wishlist.js 🔹 Wishlist schema
-│ └── Order.js 🔹 Order schema
-├── routes/ # API routes
-│ ├── authRoutes.js 🔹 Auth APIs
-│ ├── productRoutes.js 🔹 Product APIs
-│ ├── cartRoutes.js 🔹 Cart APIs
-│ ├── wishlistRoutes.js 🔹 Wishlist APIs
-│ ├── orderRoutes.js 🔹 Order APIs
-│ └── uploadRoutes.js 🔹 File upload APIs
-├── utils/ # Helper functions
-│ ├── generateToken.js 🔹 JWT token generator
-│ └── upload.js 🔹 Multer config for file uploads
-├── .env # Environment variables 🔹 DB, Cloudinary, Stripe keys
-├── server.js # Entry point of backend (Express server)
-├── package.json # Dependencies & scripts
-└── README.md # Backend docs
+1. ├── config/                # Database & third-party configs
+   - 1.1 ├── db.js 🔹 Important for DB setup
+   - 1.2 ├── cloudinary.js 🔹 For image uploads
+   - 1.3 └── stripe.js 🔹 For payment integration
+2. ├── controllers/           # Business logic (APIs handling)
+   - 2.1 ├── authController.js 🔹 Handles login/register
+   - 2.2 ├── productController.js 🔹 CRUD for products
+   - 2.3 ├── cartController.js 🔹 Cart API logic
+   - 2.4 ├── wishlistController.js 🔹 Wishlist API logic
+   - 2.5 ├── orderController.js 🔹 Order API logic
+   - 2.6 └── uploadController.js 🔹 File uploads
+3. ├── middlewares/           # Custom middlewares
+   - 3.1 ├── authMiddleware.js 🔹 JWT verify middleware, Protect routes
+   - 3.2 └── errorHandler.js 🔹 Global error handler
+4. ├── models/                # Mongoose models (MongoDB Schema)
+   - 4.1 ├── User.js 🔹 User schema
+   - 4.2 ├── Product.js 🔹 Product schema
+   - 4.3 ├── Cart.js 🔹 Cart schema
+   - 4.4 ├── Wishlist.js 🔹 Wishlist schema
+   - 4.5 └── Order.js 🔹 Order schema
+5. ├── routes/                # API routes
+   - 5.1 ├── authRoutes.js 🔹 Auth APIs
+   - 5.2 ├── productRoutes.js 🔹 Product APIs
+   - 5.3 ├── cartRoutes.js 🔹 Cart APIs
+   - 5.4 ├── wishlistRoutes.js 🔹 Wishlist APIs
+   - 5.5 ├── orderRoutes.js 🔹 Order APIs
+   - 5.6 └── uploadRoutes.js 🔹 File upload APIs
+6. ├── utils/                 # Helper functions
+   - 6.1 ├── generateToken.js 🔹 JWT token generator
+   - 6.2 └── upload.js 🔹 Multer config for file uploads
+7. ├── .env 🔹 Environment variables (DB, Cloudinary, Stripe keys)
+8. ├── server.js 🔹 Entry point of backend (Express server)
+9. ├── package.json 🔹 Dependencies & scripts
+10. └── README.md 🔹 Backend docs
 
 
 - 🔹 MongoDB Atlas Connection  
@@ -119,36 +120,36 @@ Backend/
 
 ## 📂 Frontend Folder Structure
 
-
 Frontend/
-│── dist/ # Production build files 🔹 Ready for deployment
-│── node_modules/ # Installed dependencies 🔹 Auto-generated
-│── public/ # Public assets 🔹 favicon, static images
-│── src/
-│ │── assets/ # Images, icons and other assets
-│ │── components/ # Reusable UI components 🔹 Header, Footer, etc.
-│ │── App.css # Global styles for App
-│ │── App.jsx # Root component with routes
-│ │── AuthContext.jsx # Context API for Authentication 🔹 Provides auth state
-│ │── cart.jsx # Cart Page
-│ │── first.jsx # First/Landing Page
-│ │── Footer.jsx # Footer Component
-│ │── Header.jsx # Header / Navbar Component
-│ │── Home.jsx # Home Page
-│ │── index.css # Global CSS
-│ │── main.jsx # Entry Point (ReactDOM render)
-│ │── ProtectedRoute.jsx # Higher-order component for Protected Routes 🔹 Protect pages
-│ │── SingleProduct.jsx # Single Product Details Page
-│ │── UseContext.jsx # Custom Context Hook 🔹 Helper for context
-│ │── UserProvider.jsx # User Context Provider
-│ │── wishlist.jsx # Wishlist Page
-│── .env # Environment variables 🔹 API URLs
-│── .gitignore # Git ignored files
-│── axiosConfig.js # Axios configuration for API calls 🔹 Base URL, interceptors
-│── eslint.config.js # ESLint configuration
-│── index.html # Main HTML template
-│── package.json # Project dependencies & scripts
-│── vite.config.js # Vite configuration
+1. ├── dist/ 🔹 Production build files, ready for deployment
+2. ├── node_modules/ 🔹 Installed dependencies, auto-generated
+3. ├── public/ 🔹 Public assets (favicon, static images)
+4. ├── src/
+   - 4.1 ├── assets/ 🔹 Images, icons, and other assets
+   - 4.2 ├── components/ 🔹 Reusable UI components (Header, Footer, etc.)
+   - 4.3 ├── App.css 🔹 Global styles for App
+   - 4.4 ├── App.jsx 🔹 Root component with routes
+   - 4.5 ├── AuthContext.jsx 🔹 Context API for Authentication, provides auth state
+   - 4.6 ├── cart.jsx 🔹 Cart Page
+   - 4.7 ├── first.jsx 🔹 First/Landing Page
+   - 4.8 ├── Footer.jsx 🔹 Footer Component
+   - 4.9 ├── Header.jsx 🔹 Header / Navbar Component
+   - 4.10 ├── Home.jsx 🔹 Home Page
+   - 4.11 ├── index.css 🔹 Global CSS
+   - 4.12 ├── main.jsx 🔹 Entry Point (ReactDOM render)
+   - 4.13 ├── ProtectedRoute.jsx 🔹 Higher-order component to protect routes/pages
+   - 4.14 ├── SingleProduct.jsx 🔹 Single Product Details Page
+   - 4.15 ├── UseContext.jsx 🔹 Custom Context Hook, helper for context
+   - 4.16 ├── UserProvider.jsx 🔹 User Context Provider
+   - 4.17 └── wishlist.jsx 🔹 Wishlist Page
+5. ├── .env 🔹 Environment variables (API URLs, etc.)
+6. ├── .gitignore 🔹 Git ignored files
+7. ├── axiosConfig.js 🔹 Axios configuration (Base URL, interceptors)
+8. ├── eslint.config.js 🔹 ESLint configuration
+9. ├── index.html 🔹 Main HTML template
+10. ├── package.json 🔹 Project dependencies & scripts
+11. └── vite.config.js 🔹 Vite configuration
+
 
 
 - 🔹 Vite Optimized Build  
